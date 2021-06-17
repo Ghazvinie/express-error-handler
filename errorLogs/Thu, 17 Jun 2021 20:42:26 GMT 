@@ -1,0 +1,12 @@
+
+        ----------- ERROR LOG  START -----------
+
+        ERROR_MESSAGE: "message"
+
+        HTTP_CODE: "500"
+
+        DESCRIPTION: "description"
+
+        STACK: undefined
+
+        ----------- ERROR LOG  END -----------
