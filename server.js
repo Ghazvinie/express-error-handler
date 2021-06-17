@@ -1,8 +1,7 @@
-class GeneralError extends Error {
-    constructor(message, status){
-        super(message);
-        this.status = status;
-    }
+const express = require('express');
 
+const app = express();
 
-}
+app.get('/apiError', (req, res) => {
+    try 
+})
