@@ -5,7 +5,7 @@ to provide an example of a custom method.
 */
 process.on('uncaughtException', err => {
     console.log(`----- UNCAUGHT EXCEPTION -----\n`);
-    console.error(`${err}\n`)
+    console.error(`${err}\n`);
     console.error(`${err.stack}\n`);
     console.log(`----- FORCED SHUTDOWN -----`);
     process.exit(1);
@@ -15,7 +15,12 @@ process.on('uncaughtException', err => {
 const dotenv = require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const { GeneralError, MongooseError, ErrorHandler, APIError } = require('./utils/errorClasses');
+
+// Error classes
+const GeneralError = require('./utils/generalError');
+const ErrorHandler = require('./utils/errorHandler');
+const MongooseError = require('./utils/mongooseError');
+const APIError = require('./utils/apiError');
 
 // Create a basic data structure to test some database errors
 const Model = mongoose.model('error', new mongoose.Schema({ someProp: { unique: true, type: Number } }));
