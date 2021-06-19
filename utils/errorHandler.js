@@ -1,10 +1,12 @@
 const GeneralError = require('./generalError');
 const dotenv = require('dotenv').config();
+
 /*
 ErrorHandler provides different methods for handling errors, more methods can be added to
 provide functionality for different situations. Methods for sending the error on to system
 admins or to some other monitoring service.
 */
+
 class ErrorHandler extends GeneralError {
     constructor(options) {
         super();
@@ -13,7 +15,7 @@ class ErrorHandler extends GeneralError {
 
     /* 
     handleErrors() is a method that automatically handles an error and sends a specific response to the client 
-    depending on the whether the app is in development or in production. If the error is opertational then 
+    depending on the whether the app is in development or in production. If the error is operational then 
     it will log to a file and the console. If it is a programmer error then it will emit 'SIGTERM' which will 
     cause the application to immediately shutdown. 
     */

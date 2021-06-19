@@ -14,6 +14,7 @@ GeneralError class extends the default Error class. The parameters are used to p
 information about the error. For example, isOperational determines whether the error is a runtime 
 error, and therefore should be handled differently from a programmer error. 
  */
+
 class GeneralError extends Error {
     constructor(message, httpCode, description, isOperational) {
         super(message);
@@ -25,7 +26,8 @@ class GeneralError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 
-    /* Method for logging the error to a file. What information to include
+    /* 
+    Method for logging the error to a file. What information to include
     can be customised. 
     */
     static logErrorToFile(err) {
