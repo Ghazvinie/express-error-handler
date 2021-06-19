@@ -1,7 +1,7 @@
 // Handle uncaught exceptions, keep at top to make sure all are caught.
 process.on('uncaughtException', err => {
     console.error(
-        `----- UNCAUGHT EXCEPTION -----
+`----- UNCAUGHT EXCEPTION -----
 ${err}\n
 ${err.stack}
 ----- FORCED SHUTDOWN -----`
@@ -11,10 +11,10 @@ ${err.stack}
 
 
 const express = require('express');
-const { GeneralError, MongooseError } = require('./utils/errorClasses');
+const { GeneralError, MongooseError, ErrorHandler } = require('./utils/errorClasses');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
-const NODE_ENVIRONMENT = process.env.NODE_ENV || "development";
+const NODE_ENV = process.env.NODE_ENV
 
 const Model = mongoose.model('Test', new mongoose.Schema({ someProp: { unique: true, type: Number }, someProp1: { unique: true, type: Number }, someProp2: { unique: true, type: Number } }));
 
@@ -30,22 +30,25 @@ app.get('/', async (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    if (err.name === 'MongoError' || err.name === 'ValidationError' || err.name === 'CastError') {
-        const message = MongooseError.messageGenerator(err);
-        const error = new MongooseError(message);
-    }
-})
+    // if (err.name === 'MongoError' || err.name === 'ValidationError' || err.name === 'CastError') {
+    //     const message = MongooseError.messageGenerator(err);
+    //     const error = new MongooseError(message);
+    // }
+    const erroHandler = new ErrorHandler();
+    erroHandler.handleErrors(err, req, res, next)
+    // ErrorHandler.handleErrors(err, req, res, next);
+});
 
 const server = app.listen(3000, () => console.log('Server is listening on port 3000...'));
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }, () => console.log('Connected to DB...'));
 
 
 
-// Handle any uncaught exceptions
+// Handle any uncaught rejections
 process.on('unhandledRejection', (err, promise) => {
     console.error(`UNHANDLED REJECTION, REASON: ${err.message}\nOCCURED AT:`);
     console.log(promise);
-    console.log(' ----- STARTING SHUTDOWN -----');
+    console.error(' ----- STARTING SHUTDOWN -----');
     // Attempt graceful shutdown
     mongoose.disconnect(async () => {
         console.log('Disconnected from DB...');

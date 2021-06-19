@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const dotenv = require('dotenv').config();
 
 class GeneralError extends Error {
     constructor(message, httpCode, description, isOperational) {
@@ -49,14 +50,14 @@ class MongooseError extends GeneralError {
         super(message, httpCode, description, isOperational);
     }
 
-    static messageGenerator(err){
-        if (err.name === 'MongoError'){
+    static messageGenerator(err) {
+        if (err.name === 'MongoError') {
             return this.duplicateErrorMessage(err);
         }
-        if (err.name === 'CastError'){
+        if (err.name === 'CastError') {
             return this.castErrorMessage(err);
         }
-        if (err.name === 'ValidationError'){
+        if (err.name === 'ValidationError') {
             return this.validationErrorMessage(err);
         }
     }
@@ -66,7 +67,7 @@ class MongooseError extends GeneralError {
         return message;
     }
 
-     static duplicateErrorMessage(err) {
+    static duplicateErrorMessage(err) {
         const key = Object.keys(err.keyValue);
         const value = Object.values(err.keyValue);
         const message = `Property: ${key} has a duplicate field: ${value}. Please use another value.`;
@@ -80,4 +81,55 @@ class MongooseError extends GeneralError {
     }
 }
 
-module.exports = { GeneralError, MongooseError };
+class ErrorHandler extends GeneralError {
+    contructor(options) {
+        this.options = options;
+    }
+
+    handleErrors(err, req, res, next) {
+        let error;
+        if (err.name === 'MongoError' || err.name === 'ValidationError' || err.name === 'CastError') {
+            const message = MongooseError.messageGenerator(err);
+            error = new MongooseError(message);
+        }
+
+        if (err.description === 'API_ERROR') {
+            error = new APIError(err.message);
+        }
+
+        if (process.env.NODE_ENV === 'development') {
+            this.sendErrorToDev(error, res);
+        } else if (process.env.NODE_ENV === 'production') {
+            this.sendErrorToProd(error, res);
+        }
+
+        if (this.options.logToFile){
+            error.prototype.logErrorToFile(error);
+        }
+
+        if (this.options.logToConsole){
+            error.prototype.logToConsole(error);
+        }
+
+    }
+
+    sendErrorToDev(err, res) {
+        res.status(err.httpCode).json({
+            status: err.status,
+            error: err,
+            message: err.message,
+            stack: err.stack
+        });
+    }
+
+    sendErrorToProd(err, res) {
+        res.status(err.statusCode).json({
+            status: err.status,
+            message: err.message
+        });
+    }
+
+}
+
+
+module.exports = { GeneralError, MongooseError, ErrorHandler };
