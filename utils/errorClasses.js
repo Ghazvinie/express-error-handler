@@ -12,7 +12,6 @@ class GeneralError extends Error {
     }
 
     logErrorToFile(err) {
-        console.log(err.description)
         const fileName = `${new Date().toUTCString()} - ${err.description}`;
         const logDir = path.join(__dirname, `../errorLogs/${fileName}`);
         const errLog = `
@@ -41,8 +40,8 @@ const commonHttp = {
 };
 
 class APIError extends GeneralError {
-    constructor(message, httpCode = commonHttp.INTERNAL_SERVER, description = 'INTERNAL_SERVER_ERROR', isOperational = true) {
-        super(message, httpCode, description, isOperational, originalError);
+    constructor(message, httpCode = commonHttp.INTERNAL_SERVER, description = 'INTERNAL_SERVER_ERROR', isOperational = false) {
+        super(message, httpCode, description, isOperational);
     }
 }
 
@@ -88,14 +87,14 @@ class ErrorHandler extends GeneralError {
         this.options = options;
     }
 
-    handleErrors(err, req, res, next) {
+    handleErrors(err, res) {
         let error;
         if (err.name === 'MongoError' || err.name === 'ValidationError' || err.name === 'CastError') {
             const message = MongooseError.messageGenerator(err);
             error = new MongooseError(message);
         }
 
-        if (err.description === 'API_ERROR') {
+        if (err.description === 'INTERNAL_SERVER_ERROR') {
             error = new APIError(err.message);
         }
 
@@ -105,20 +104,23 @@ class ErrorHandler extends GeneralError {
             this.sendErrorToProd(error, res);
         }
 
-        if (this.options.logToFile){
-            console.log(error.description);
-            this.logErrorToFile(error);
-        }
-
-        if (this.options.logToConsole){
-            error.prototype.logToConsole(error);
+        if (err.isOperational){
+            if (this.options.logToFile){
+                this.logErrorToFile(error);
+            }
+            if (this.options.logToConsole){
+                error.prototype.logToConsole(error);
+            }
+            return;
+        } else {
+            process.emit('SIGTERM');
         }
 
         return;
     }
 
     sendErrorToDev(err, res) {
-        res.status(err.httpCode).json({
+        return res.status(err.httpCode).json({
             status: err.status,
             error: err,
             message: err.message,
@@ -127,7 +129,7 @@ class ErrorHandler extends GeneralError {
     }
 
     sendErrorToProd(err, res) {
-        res.status(err.statusCode).json({
+        return res.status(err.statusCode).json({
             status: err.status,
             message: err.message
         });
@@ -135,4 +137,4 @@ class ErrorHandler extends GeneralError {
 
 }
 
-module.exports = { GeneralError, MongooseError, ErrorHandler };
+module.exports = { GeneralError, APIError, MongooseError, ErrorHandler };
