@@ -22,3 +22,5 @@ These error handling methods are my own attempts and are used to provide an exam
 - Handling the error where it occurs and then sending a response.
 
 ### 
+
+
