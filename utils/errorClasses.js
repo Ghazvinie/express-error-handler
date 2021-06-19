@@ -11,7 +11,7 @@ class GeneralError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 
-    logErrorToFile(err) {
+    static logErrorToFile(err) {
         const fileName = `${new Date().toUTCString()} - ${err.description}`;
         const logDir = path.join(__dirname, `../errorLogs/${fileName}`);
         const errLog = `
@@ -25,7 +25,7 @@ class GeneralError extends Error {
         return;
     }
 
-    logToConsole(err) {
+    static logToConsole(err) {
         console.error(err);
         return;
     }
