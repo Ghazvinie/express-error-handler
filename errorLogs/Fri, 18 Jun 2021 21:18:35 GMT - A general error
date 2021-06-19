@@ -1,0 +1,21 @@
+
+        ----------- ERROR LOG START -----------
+
+        ERROR_MESSAGE: "Property: someProp has a duplicate field: 12. Please use another value."
+
+        HTTP_CODE: "500"
+
+        DESCRIPTION: "A general error"
+
+        STACK: Error: Property: someProp has a duplicate field: 12. Please use another value.
+    at /home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:26:18
+    at Layer.handle_error (/home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:315:13)
+    at /home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:275:10)
+    at next (/home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/route.js:127:14)
+    at /home/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:17:8
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+
+        ----------- ERROR LOG END -----------
