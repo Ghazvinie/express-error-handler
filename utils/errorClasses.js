@@ -12,8 +12,9 @@ class GeneralError extends Error {
     }
 
     logErrorToFile(err) {
+        console.log(err.description)
         const fileName = `${new Date().toUTCString()} - ${err.description}`;
-        const logDir = path.join(__dirname, `./errorLogs/${fileName}`);
+        const logDir = path.join(__dirname, `../errorLogs/${fileName}`);
         const errLog = `
         ----------- ERROR LOG START -----------\n
         ERROR_MESSAGE: "${err.message}"\n
@@ -82,7 +83,8 @@ class MongooseError extends GeneralError {
 }
 
 class ErrorHandler extends GeneralError {
-    contructor(options) {
+    constructor(options) {
+        super();
         this.options = options;
     }
 
@@ -104,13 +106,15 @@ class ErrorHandler extends GeneralError {
         }
 
         if (this.options.logToFile){
-            error.prototype.logErrorToFile(error);
+            console.log(error.description);
+            this.logErrorToFile(error);
         }
 
         if (this.options.logToConsole){
             error.prototype.logToConsole(error);
         }
 
+        return;
     }
 
     sendErrorToDev(err, res) {
@@ -130,6 +134,5 @@ class ErrorHandler extends GeneralError {
     }
 
 }
-
 
 module.exports = { GeneralError, MongooseError, ErrorHandler };

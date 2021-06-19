@@ -1,7 +1,7 @@
 // Handle uncaught exceptions, keep at top to make sure all are caught.
 process.on('uncaughtException', err => {
     console.error(
-`----- UNCAUGHT EXCEPTION -----
+        `----- UNCAUGHT EXCEPTION -----
 ${err}\n
 ${err.stack}
 ----- FORCED SHUTDOWN -----`
@@ -29,13 +29,14 @@ app.get('/', async (req, res, next) => {
     }
 });
 
+
 app.use((err, req, res, next) => {
     // if (err.name === 'MongoError' || err.name === 'ValidationError' || err.name === 'CastError') {
     //     const message = MongooseError.messageGenerator(err);
     //     const error = new MongooseError(message);
     // }
-    const erroHandler = new ErrorHandler();
-    erroHandler.handleErrors(err, req, res, next)
+    const errorHandler = new ErrorHandler({ logToFile: true });
+    errorHandler.handleErrors(err, req, res, next);
     // ErrorHandler.handleErrors(err, req, res, next);
 });
 
