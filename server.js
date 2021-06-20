@@ -58,6 +58,7 @@ app.get('/databaseerror', async (req, res, next) => {
  * Use this path to generate an example of an API error. The type of error that could occur here will be
  * very specific to each application.
 */
+
 app.get('/apierror', (req, res, next) => {
     try {
         throw (new APIError('AN ERROR')); // Artificially generate an error
