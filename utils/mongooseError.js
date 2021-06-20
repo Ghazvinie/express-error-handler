@@ -1,9 +1,9 @@
 const GeneralError = require('./generalError');
 
 /*
-MongooseError provides some more sophisticated error handling and management. Default parameters 
-are provided along with some methods for automatically generating the customised error message 
-based on the type of error. These methods can be used independently if needed. 
+ * MongooseError provides more sophisticated error handling and management. Default parameters 
+ * are provided along with some methods for automatically generating the customised error message 
+ * based on the type of error. These methods can be used independently if needed. 
 */
 class MongooseError extends GeneralError {
     constructor(message, httpCode = commonHttp.BAD_REQUEST, description = 'MONGOOSE_ERROR', isOperational = true) {
@@ -23,6 +23,10 @@ class MongooseError extends GeneralError {
         }
     }
 
+    /**
+     * These methods return a different message depending on the type of error, each containing
+     * information relevant to that error type. 
+     */
     static castErrorMessage(err) {
         const message = `Invalid ${err.path}: ${err.value}`;
         return message;

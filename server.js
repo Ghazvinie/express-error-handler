@@ -1,8 +1,10 @@
-/* 
-Handle uncaught exceptions, keep at top to make sure all are caught.
-Could just use default error handling for this, this example is used 
-to provide an example of a custom method.
+/**
+  * Handle uncaught exceptions, keep at top to make sure all are caught.
+  * The default error handler could be used in this instance as the eventual
+  * outcome is the same - a forced shutdown. This example shows one way of 
+  * providing a customised approach of handling this type of exception.
 */
+
 process.on('uncaughtException', err => {
     console.log(`----- UNCAUGHT EXCEPTION -----\n`);
     console.error(`${err}\n`);
@@ -35,9 +37,9 @@ mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology
     console.log('Connected to DB...');
 });
 
-/*
-Use this path to generate a few examples of database errors that may occur. These can be
-created by providing an invalid _id, an invalid type or a duplicate entry, to name a few. 
+/**
+ * Use this path to generate a few examples of database errors that may occur. These can be
+ * created by providing an invalid _id, an invalid type or a duplicate entry, to name a few. 
 */
 app.get('/databaseerror', async (req, res, next) => {
     try {
@@ -47,35 +49,37 @@ app.get('/databaseerror', async (req, res, next) => {
 
         // throw (new MongooseError('ValidationError'));  // Artificially generate an error
     } catch (err) {
-        next(new MongooseError('ValidationError')); // Can pass the desired error on to error handling middleware
-        next(err); // Pass the error on to middleware to be customised at a later stage
+        next(new MongooseError('ValidationError')); // Pass a specific type of error on to error handling middleware
+        next(err); // Pass the original error on to be handled by middleware
     }
 });
 
-/*
-Use this path to generate an example of an API error. 
+/** 
+ * Use this path to generate an example of an API error. The type of error that could occur here will be
+ * very specific to each application.
 */
 app.get('/apierror', (req, res, next) => {
     try {
         throw (new APIError('Some message')); // Artificially generate an error
     } catch (error) {
-        next(new APIError('ValidationError')); // Can pass the desired error on to error handling middleware
-        next(error);
+        // next(new APIError('ValidationError')); // Pass a specific type of error on to error handling middleware
+        next(error); // Pass the original error on to be handled by middleware
     }
 });
 
-/* Use handleErrors() method to fully automate error management and eventual response to client.
-Setting logToFile and logToConsole to will automatically log the error to a file and to the console.
+/**
+* Use handleErrors() method to fully automate error management and eventual response to client.
+* Setting logToFile and logToConsole to true will automatically log the error to a file and to the console.
 */
 app.use((err, req, res, next) => {
     const errorHandler = new ErrorHandler({ logToFile: true, logToConsole: true });
-    ErrorHandler.handleErrors(err, res);
+    errorHandler.handleErrors(err, res);
 });
 
-/*
-Choose which error information to send on to the client depending on the error type. For example,
-if it is a MongooseError then the client can receive more information. If it is an APIError, they
-can receive less information. 
+/**
+ * Choose which error information to send on to the client depending on the error type. For example,
+ * if it is a MongooseError then the client can receive more information. If it is an APIError, they
+ * can receive less information. 
 */
 app.use((err, req, res, next) => {
 
@@ -95,17 +99,20 @@ app.use((err, req, res, next) => {
             message: err.message,
             description: err.description,
         });
-        // Decide to log error to console only and not a file
+        // Decide to log error to console only and not to a file
         GeneralError.logErrorToConsole(err);
     }
 });
 
-/*
-The following two shutdown methods are used to provide an example of how to
-shutdown the server gracefully (rather than an abrupt stop). They will attempt
-to stop the server from accepting new connections and to close the database connection.
-If this fails, after 10 seconds they will force a shutdown. Server connections may be held
-open depending on the client, for example, if the request includes "Connection: keep-alive".
+/**
+ * The following two shutdown methods are used to provide an example of how to
+ * shutdown the server gracefully (rather than an abrupt stop). They will attempt
+ * to stop the server from accepting new connections and to close the database connection.
+ * If this fails, after 10 seconds they will force a shutdown. Server connections may be held
+ * open by the client, for example, if the request includes "Connection: keep-alive". 
+ * 
+ * To fully close all connections before shutting down, a store of each new socket connection
+ * would need to be kept. This store could then be looped over, deleting/destroying each socket.
 */
 
 // Handle any uncaught rejections
@@ -115,16 +122,18 @@ process.on('unhandledRejection', (err, promise) => {
     console.log(' ----- STARTING SHUTDOWN -----');
 
     // Attempt graceful shutdown
-    mongoose.disconnect(async () => {
-        console.log('Disconnected from DB...');
-        server.close(() => console.log('Server disconnected...'));
+    console.log('Closing server...');
+    server.close(() => console.log('server closed'));
+    console.log('Closing DB connection...');
+    mongoose.disconnect(() => {
+        console.log('Disconnected from DB');
         console.log('----- SHUTDOWN COMPLETE -----');
         process.exit(1);
     });
 
     // Force shutdown
     setTimeout(() => {
-        console.log('FORCING SHUTDOWN');
+        console.log('----- FORCING SHUTDOWN -----');
         process.exit(1);
     }, 10000);
 });
@@ -136,16 +145,16 @@ process.on('SIGTERM', () => {
     // Attempt graceful shutdown
     console.log('Closing server...');
     server.close(() => console.log('server closed'));
-
     console.log('Closing DB connection...');
     mongoose.disconnect(() => {
-        console.log('Disconnected from DB...');
+        console.log('Disconnected from DB');
+        console.log('----- SHUTDOWN COMPLETE -----');
         process.exit(1);
     });
 
     // Force shutdown
     setTimeout(() => {
-        console.log('----- FORCED SHUTDOWN -----');
+        console.log('----- FORCING SHUTDOWN -----');
         process.exit(1);
     }, 10000);
 });
