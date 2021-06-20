@@ -31,7 +31,7 @@ class ErrorHandler extends GeneralError {
             const message = DatabaseError.messageGenerator(err);
             error = new DatabaseError(message);
 
-        // Check if it is an API error
+            // Check if it is an API error
         } else if (err.description === 'INTERNAL_SERVER_ERROR') {
             error = new APIError(err.message);
         } else if (err.message) {
@@ -69,7 +69,7 @@ class ErrorHandler extends GeneralError {
      * development or production. If the app is in production then it is important that 
      * certain critical information is not leaked. 
     */
-   
+
     sendErrorToDev(err, res) {
         return res.status(err.httpCode).json({
             status: err.status,
