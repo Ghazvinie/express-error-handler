@@ -50,3 +50,5 @@ You will need to provide your own MongoDB URI in environmental variables (proces
 You can modify the code and/or classes to suit your error handling requirements. 
 
 As it is currently set up a GET request to /databaseerror will log the error to a file, to the console and send the full details to the client. 
+
+Some examples of error log files are provided.
