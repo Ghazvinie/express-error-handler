@@ -38,6 +38,7 @@ class GeneralError extends Error {
      * a directory with a filename constructed from the current date and time, 
      * along with the error description.
     */
+   
     static logErrorToFile(err) {
         const fileName = `${new Date().toUTCString()} - ${err.description}`;
         const logDir = path.join(__dirname, `../errorLogs/${fileName}`);

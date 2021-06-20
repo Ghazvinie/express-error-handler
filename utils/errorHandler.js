@@ -23,6 +23,7 @@ class ErrorHandler extends GeneralError {
      * will log to a file and the console. If it is a programmer error then it will emit 'SIGTERM' which will cause 
      * the application to immediately shutdown. 
     */
+
     handleErrors(err, res) {
         let error;
         // Check if it is a database error
@@ -68,6 +69,7 @@ class ErrorHandler extends GeneralError {
      * development or production. If the app is in production then it is important that 
      * certain critical information is not leaked. 
     */
+   
     sendErrorToDev(err, res) {
         return res.status(err.httpCode).json({
             status: err.status,
