@@ -28,7 +28,7 @@ class DatabaseError extends GeneralError {
      * These methods return a different message depending on the type of error, each containing
      * information relevant to that error type. 
      */
-    
+
     static castErrorMessage(err) {
         const message = `Invalid ${err.path}: ${err.value}`;
         return message;
