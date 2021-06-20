@@ -51,4 +51,5 @@ You can modify the code and/or classes to suit your error handling requirements.
 
 As it is currently set up a GET request to /databaseerror will log the error to a file, to the console and send the full details to the client. 
 
+### Log files
 Some examples of error log files are provided.
