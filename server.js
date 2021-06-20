@@ -72,6 +72,7 @@ app.get('/apierror', (req, res, next) => {
 * Use handleErrors() method to fully automate error management and eventual response to client.
 * Setting logToFile and logToConsole to true will automatically log the error to a file and to the console.
 */
+
 app.use((err, req, res, next) => {
     const errorHandler = new ErrorHandler({ logToFile: true, logToConsole: true });
     errorHandler.handleErrors(err, res);
@@ -83,6 +84,7 @@ app.use((err, req, res, next) => {
  * if it is a DatabaseError then the client can receive more information. If it is an APIError, they
  * can receive less information. 
 */
+
 app.use((err, req, res, next) => {
     if (err instanceof DatabaseError) {
         res.status(err.httpCode).json({
