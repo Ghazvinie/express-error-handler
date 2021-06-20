@@ -6,10 +6,10 @@
 */
 
 process.on('uncaughtException', err => {
-    console.log(`----- UNCAUGHT EXCEPTION -----\n`);
+    console.log(` ----- UNCAUGHT EXCEPTION -----\n`);
     console.error(`${err}\n`);
     console.error(`${err.stack}\n`);
-    console.log(`----- FORCED SHUTDOWN -----`);
+    console.log(` ----- FORCED SHUTDOWN -----`);
     process.exit(1);
 }
 );
@@ -19,9 +19,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 // Error classes
-const GeneralError = require('./utils/generalError');
+const { GeneralError } = require('./utils/generalError');
 const ErrorHandler = require('./utils/errorHandler');
-const MongooseError = require('./utils/mongooseError');
+const DatabaseError = require('./utils/databaseError');
 const APIError = require('./utils/apiError');
 
 // Create a basic data structure to test some database errors
@@ -47,9 +47,9 @@ app.get('/databaseerror', async (req, res, next) => {
         // await Model.create({ someProp: 'invalid_type' }); // Generates validation error
         // await Model.create({ someProp: 1 }); // Generates duplicate error
 
-        // throw (new MongooseError('ValidationError'));  // Artificially generate an error
+        // throw (new DatabaseError('ValidationError'));  // Artificially generate an error
     } catch (err) {
-        next(new MongooseError('ValidationError')); // Pass a specific type of error on to error handling middleware
+        // next(new DatabaseError('AN ERROR')); // Pass a specific type of error on to error handling middleware
         next(err); // Pass the original error on to be handled by middleware
     }
 });
@@ -60,9 +60,9 @@ app.get('/databaseerror', async (req, res, next) => {
 */
 app.get('/apierror', (req, res, next) => {
     try {
-        throw (new APIError('Some message')); // Artificially generate an error
+        throw (new APIError('AN ERROR')); // Artificially generate an error
     } catch (error) {
-        // next(new APIError('ValidationError')); // Pass a specific type of error on to error handling middleware
+        // next(new APIError('AN ERROR')); // Pass a specific type of error on to error handling middleware
         next(error); // Pass the original error on to be handled by middleware
     }
 });
@@ -74,16 +74,17 @@ app.get('/apierror', (req, res, next) => {
 app.use((err, req, res, next) => {
     const errorHandler = new ErrorHandler({ logToFile: true, logToConsole: true });
     errorHandler.handleErrors(err, res);
+    return;
 });
 
 /**
  * Choose which error information to send on to the client depending on the error type. For example,
- * if it is a MongooseError then the client can receive more information. If it is an APIError, they
+ * if it is a DatabaseError then the client can receive more information. If it is an APIError, they
  * can receive less information. 
 */
 app.use((err, req, res, next) => {
 
-    if (err instanceof MongooseError) {
+    if (err instanceof DatabaseError) {
         res.status(err.httpCode).json({
             message: err.message,
             description: err.description,
@@ -100,7 +101,7 @@ app.use((err, req, res, next) => {
             description: err.description,
         });
         // Decide to log error to console only and not to a file
-        GeneralError.logErrorToConsole(err);
+        GeneralError.logToConsole(err);
     }
 });
 
@@ -127,19 +128,20 @@ process.on('unhandledRejection', (err, promise) => {
     console.log('Closing DB connection...');
     mongoose.disconnect(() => {
         console.log('Disconnected from DB');
-        console.log('----- SHUTDOWN COMPLETE -----');
+        console.log(' ----- SHUTDOWN COMPLETE -----');
         process.exit(1);
     });
 
     // Force shutdown
     setTimeout(() => {
-        console.log('----- FORCING SHUTDOWN -----');
+        console.log(' ----- FORCING SHUTDOWN -----');
         process.exit(1);
     }, 10000);
 });
 
 // Shutdown on SIGTERM
 process.on('SIGTERM', () => {
+    console.log(' ----- SIGTERM RECEIVED -----');
     console.log(' ----- STARTING SHUTDOWN -----');
 
     // Attempt graceful shutdown
@@ -148,13 +150,13 @@ process.on('SIGTERM', () => {
     console.log('Closing DB connection...');
     mongoose.disconnect(() => {
         console.log('Disconnected from DB');
-        console.log('----- SHUTDOWN COMPLETE -----');
+        console.log(' ----- SHUTDOWN COMPLETE -----');
         process.exit(1);
     });
 
     // Force shutdown
     setTimeout(() => {
-        console.log('----- FORCING SHUTDOWN -----');
+        console.log(' ----- FORCING SHUTDOWN -----');
         process.exit(1);
     }, 10000);
 });

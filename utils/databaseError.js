@@ -1,12 +1,12 @@
-const GeneralError = require('./generalError');
+const { GeneralError, commonHttp } = require('./generalError');
 
 /*
- * MongooseError provides more sophisticated error handling and management. Default parameters 
+ * DatbaseError provides more sophisticated error handling and management. Default parameters 
  * are provided along with some methods for automatically generating the customised error message 
  * based on the type of error. These methods can be used independently if needed. 
 */
-class MongooseError extends GeneralError {
-    constructor(message, httpCode = commonHttp.BAD_REQUEST, description = 'MONGOOSE_ERROR', isOperational = true) {
+class DatabaseError extends GeneralError {
+    constructor(message, httpCode = commonHttp.BAD_REQUEST, description = 'DATABASE_ERROR', isOperational = true) {
         super(message, httpCode, description, isOperational);
     }
 
@@ -46,4 +46,4 @@ class MongooseError extends GeneralError {
     }
 }
 
-module.exports = MongooseError;
+module.exports = DatabaseError;

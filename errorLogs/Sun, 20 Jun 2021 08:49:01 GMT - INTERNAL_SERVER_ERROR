@@ -1,22 +1,22 @@
 
         ----------- ERROR LOG START -----------
 
-        ERROR_MESSAGE: "Some message"
+        ERROR_MESSAGE: "AN ERROR"
 
         HTTP_CODE: "500"
 
         DESCRIPTION: "INTERNAL_SERVER_ERROR"
 
-        STACK: Error: Some message
-    at ErrorHandler.handleErrors (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/utils/errorClasses.js:98:21)
-    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:45:18
+        STACK: Error: AN ERROR
+    at ErrorHandler.handleErrors (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/utils/errorHandler.js:34:21)
+    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:76:18
     at Layer.handle_error (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/layer.js:71:5)
     at trim_prefix (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:315:13)
     at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:284:7
     at Function.process_params (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:335:12)
     at next (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:275:10)
     at next (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/route.js:127:14)
-    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:36:9
+    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:65:9
     at Layer.handle [as handle_request] (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/layer.js:95:5)
     at next (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/route.js:137:13)
     at Route.dispatch (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/route.js:112:3)

@@ -1,5 +1,7 @@
-const GeneralError = require('./generalError');
 const dotenv = require('dotenv').config();
+const { GeneralError } = require('./generalError');
+const DatabaseError = require('./databaseError');
+const APIError = require('./apiError');
 
 /**
  * ErrorHandler provides different methods for handling errors, more methods can be added to
@@ -25,13 +27,13 @@ class ErrorHandler extends GeneralError {
         let error;
         // Check if it is a database error
         if (err.name === 'MongoError' || err.name === 'ValidationError' || err.name === 'CastError') {
-            const message = MongooseError.messageGenerator(err);
-            error = new MongooseError(message);
-        }
+            const message = DatabaseError.messageGenerator(err);
+            error = new DatabaseError(message);
 
-        // Check if it is an API error
-        if (err.description === 'INTERNAL_SERVER_ERROR') {
+        } else if (err.description === 'INTERNAL_SERVER_ERROR') { // Check if it is an API error
             error = new APIError(err.message);
+        } else {
+            error = err;
         }
 
         // Check if app is in development or production
@@ -42,14 +44,14 @@ class ErrorHandler extends GeneralError {
         }
 
         // Checks if it is an operational error
-        if (err.isOperational) {
+        if (error.isOperational) {
             // Logs to a file
             if (this.options.logToFile) {
-                this.logErrorToFile(error);
+                GeneralError.logErrorToFile(error);
             }
             // Logs to the console
             if (this.options.logToConsole) {
-                error.prototype.logToConsole(error);
+                GeneralError.logToConsole(error);
             }
             return;
         } else {

@@ -60,4 +60,4 @@ class GeneralError extends Error {
 
 }
 
-module.exports = GeneralError;
+module.exports = { GeneralError, commonHttp };
