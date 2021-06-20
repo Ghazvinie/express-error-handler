@@ -8,15 +8,15 @@
         DESCRIPTION: "DATABASE_ERROR"
 
         STACK: Error: Invalid data input: Cast to ObjectId failed for value "invalid_id" (type string) at path "_id"
-    at ErrorHandler.handleErrors (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/utils/errorHandler.js:30:21)
-    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:76:18
-    at Layer.handle_error (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/layer.js:71:5)
-    at trim_prefix (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:315:13)
-    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:284:7
-    at Function.process_params (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:335:12)
-    at next (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:275:10)
-    at next (/Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/route.js:127:14)
-    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:53:9
+    at ErrorHandler.handleErrors (/Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/utils/errorHandler.js:30:21)
+    at /Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:76:18
+    at Layer.handle_error (/Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:315:13)
+    at /Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/index.js:275:10)
+    at next (/Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/node_modules/express/lib/router/route.js:127:14)
+    at /Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:53:9
     at processTicksAndRejections (node:internal/process/task_queues:94:5)
 
         ----------- ERROR LOG END -----------

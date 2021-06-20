@@ -8,7 +8,7 @@
         DESCRIPTION: "A Bad Error"
 
         STACK: Error: ValidationError
-    at /Users/daniel/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:52:14
+    at /Users/*****/Documents/VSCode/TutorialsAndLectures/Node/Projects/express-error-handler/server.js:52:14
     at processTicksAndRejections (node:internal/process/task_queues:94:5)
 
         ----------- ERROR LOG END -----------
