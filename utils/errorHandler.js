@@ -30,9 +30,10 @@ class ErrorHandler extends GeneralError {
             const message = DatabaseError.messageGenerator(err);
             error = new DatabaseError(message);
 
-        } else if (err.description === 'INTERNAL_SERVER_ERROR') { // Check if it is an API error
+        // Check if it is an API error
+        } else if (err.description === 'INTERNAL_SERVER_ERROR') {
             error = new APIError(err.message);
-        } else {
+        } else if (err.message) {
             error = err;
         }
 

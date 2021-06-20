@@ -49,7 +49,7 @@ app.get('/databaseerror', async (req, res, next) => {
 
         // throw (new DatabaseError('ValidationError'));  // Artificially generate an error
     } catch (err) {
-        // next(new DatabaseError('AN ERROR')); // Pass a specific type of error on to error handling middleware
+        // next(new DatabaseError('ValidationError', 501, 'A Bad Error', true )); // Pass a specific type of error on to error handling middleware
         next(err); // Pass the original error on to be handled by middleware
     }
 });
@@ -83,7 +83,6 @@ app.use((err, req, res, next) => {
  * can receive less information. 
 */
 app.use((err, req, res, next) => {
-
     if (err instanceof DatabaseError) {
         res.status(err.httpCode).json({
             message: err.message,
