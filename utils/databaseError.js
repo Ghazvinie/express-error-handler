@@ -5,6 +5,7 @@ const { GeneralError, commonHttp } = require('./generalError');
  * are provided along with some methods for automatically generating the customised error message 
  * based on the type of error. These methods can be used independently if needed. 
 */
+
 class DatabaseError extends GeneralError {
     constructor(message, httpCode = commonHttp.BAD_REQUEST, description = 'DATABASE_ERROR', isOperational = true) {
         super(message, httpCode, description, isOperational);
