@@ -1,7 +1,7 @@
 const { GeneralError, commonHttp } = require('./generalError');
 
 /*
- * DatbaseError provides more sophisticated error handling and management. Default parameters 
+ * DatabaseError provides more sophisticated error handling and management. Default parameters 
  * are provided along with some methods for automatically generating the customised error message 
  * based on the type of error. These methods can be used independently if needed. 
 */
