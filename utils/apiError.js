@@ -1,7 +1,7 @@
 const { GeneralError, commonHttp } = require('./generalError');
 
 /*
- * Simple extension of GeneralError with some default paramaters relevant to an APIError.
+ * Simple extension of GeneralError with some default parameters relevant to an APIError.
 */
 
 class APIError extends GeneralError {
