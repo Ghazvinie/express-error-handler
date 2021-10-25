@@ -37,7 +37,7 @@ Of the three, the first option is the best method as it allows for the retaining
  - Not handling errors is a security risk, and managing them correctly allows for the complete control of what information is available and to who. 
 
 ### Built with;
-- NodeJs 16.1.0 / Express 4.17.1
+- NodeJs 14.18.0 / Express 4.17.1
 - MongoDB / Mongoose 5.12.12
 
 ### To run:
